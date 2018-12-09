@@ -1,0 +1,1353 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     46401,       1345]
+NotebookOptionsPosition[     42510,       1290]
+NotebookOutlinePosition[     42929,       1307]
+CellTagsIndexPosition[     42886,       1304]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[TextData[StyleBox["Christoffel Symbols", "Chapter",
+ FontFamily->"Helvetica Neue",
+ FontColor->RGBColor[1, 0.5, 0]]], "Section",
+ CellChangeTimes->{{3.7533634829376497`*^9, 
+  3.7533634838099613`*^9}},ExpressionUUID->"32b45bae-3801-443b-accf-\
+93d0c85c02bf"],
+
+Cell[TextData[{
+ StyleBox["This Notebook computes the Christoffel Symbols from a given metric \
+",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["g", "\[Mu]\[Nu]"], TraditionalForm]],ExpressionUUID->
+  "b9b08bf1-cc1e-4e68-a4bf-e8969d19b77f"],
+ StyleBox[".\nThe Christoffel Symbols or affine connection are given by:\n",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox[
+     SuperscriptBox["\[CapitalGamma]", "\[Lambda]"], "\[Mu]\[Nu]"], "=", 
+    RowBox[{
+     FractionBox["1", "2"], 
+     RowBox[{
+      SuperscriptBox["g", "\[Lambda]\[Sigma]"], "(", 
+      RowBox[{
+       RowBox[{
+        SubscriptBox["\[PartialD]", "\[Mu]"], " ", 
+        SubscriptBox["g", "\[Sigma]\[Nu]"]}], "+", 
+       RowBox[{
+        SubscriptBox["\[PartialD]", "\[Nu]"], " ", 
+        SubscriptBox["g", "\[Sigma]\[Mu]"]}], "-", 
+       RowBox[{
+        SubscriptBox["\[PartialD]", "\[Sigma]"], " ", 
+        SubscriptBox["g", "\[Mu]\[Nu]"]}]}], ")"}]}]}], TraditionalForm]],
+  ExpressionUUID->"e20aa29f-340e-43f6-a649-a44eff9156b5"],
+ StyleBox[",\n ( ",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["\[PartialD]", 
+    RowBox[{"\[Alpha]", "  "}]], TraditionalForm]],ExpressionUUID->
+  "5970b182-a163-47df-82bc-af4e7d67f674"],
+ StyleBox["stands for the partial derivative ",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"\[PartialD]", 
+    RowBox[{"/", 
+     RowBox[{"\[PartialD]", 
+      SuperscriptBox["x", "\[Alpha]"]}]}]}], TraditionalForm]],
+  ExpressionUUID->"c4813e1a-130e-4838-9fff-c8781a6594a4"],
+ StyleBox[")\nThe user must input the covariant components of the metric \
+tensor ",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["g", "\[Mu]\[Nu]"], TraditionalForm]],ExpressionUUID->
+  "0a4c4ebf-0e06-4db7-8c2a-30c16e0f4750"],
+ StyleBox[" by editing the relevant input line in this Mathematica notebook. \
+All the components computed are in the coordinate basis ",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["in which the metric was specified. It works for all finite \
+dimensions.\n",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular",
+  FontVariations->{"CompatibilityType"->0}]
+}], "Text",
+ CellChangeTimes->{{3.7533635083665457`*^9, 
+  3.75336353034903*^9}},ExpressionUUID->"023a459f-dce5-431d-a846-\
+2eba82794cd4"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ChristoffelSymbols", "[", 
+    RowBox[{"metric_", ",", "coord_"}], "]"}], ":=", "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"inversemetric", ",", "n", ",", " ", "list"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"n", " ", "=", " ", 
+       RowBox[{"Length", "[", "coord", "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"inversemetric", " ", ":=", " ", 
+       RowBox[{"Simplify", "[", 
+        RowBox[{"Inverse", "[", "metric", "]"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"Christoffel", "=", "\[IndentingNewLine]", 
+       RowBox[{"Simplify", "[", 
+        RowBox[{"Table", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"1", "/", "2"}], ")"}], "*", 
+           RowBox[{"Sum", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"inversemetric", "[", 
+                RowBox[{"[", 
+                 RowBox[{"i", ",", "s"}], "]"}], "]"}], ")"}], "*", 
+              "\[IndentingNewLine]", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"D", "[", 
+                 RowBox[{
+                  RowBox[{"metric", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"s", ",", "j"}], "]"}], "]"}], ",", 
+                  RowBox[{"coord", "[", 
+                   RowBox[{"[", "k", "]"}], "]"}]}], " ", "]"}], "+", 
+                "\[IndentingNewLine]", 
+                RowBox[{"D", "[", 
+                 RowBox[{
+                  RowBox[{"metric", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"s", ",", "k"}], "]"}], "]"}], ",", 
+                  RowBox[{"coord", "[", 
+                   RowBox[{"[", "j", "]"}], "]"}]}], " ", "]"}], "-", 
+                "\[IndentingNewLine]", 
+                RowBox[{"D", "[", 
+                 RowBox[{
+                  RowBox[{"metric", "[", 
+                   RowBox[{"[", 
+                    RowBox[{"j", ",", "k"}], "]"}], "]"}], ",", 
+                  RowBox[{"coord", "[", 
+                   RowBox[{"[", "s", "]"}], "]"}]}], " ", "]"}]}], ")"}]}], 
+             ",", "\[IndentingNewLine]", 
+             RowBox[{"{", 
+              RowBox[{"s", ",", "1", ",", "n"}], "}"}]}], "]"}]}], ",", 
+          "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"j", ",", "1", ",", "n"}], "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"k", ",", "1", ",", "n"}], "}"}]}], "]"}], " ", "]"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"list", " ", ":=", " ", 
+       RowBox[{"Table", "[", 
+        RowBox[{
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{"UnsameQ", "[", 
+            RowBox[{
+             RowBox[{"Christoffel", "[", 
+              RowBox[{"[", 
+               RowBox[{"i", ",", "j", ",", "k"}], "]"}], "]"}], ",", "0"}], 
+            "]"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"ToString", "[", 
+              RowBox[{"\[CapitalGamma]", "[", 
+               RowBox[{"i", ",", "j", ",", "k"}], "]"}], "]"}], ",", 
+             RowBox[{"Christoffel", "[", 
+              RowBox[{"[", 
+               RowBox[{"i", ",", "j", ",", "k"}], "]"}], "]"}]}], "}"}]}], 
+          "]"}], " ", ",", 
+         RowBox[{"{", 
+          RowBox[{"i", ",", "1", ",", "n"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"j", ",", "1", ",", "n"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"k", ",", "1", ",", "j"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"a", "=", 
+       RowBox[{"Style", "[", 
+        RowBox[{"\"\<Christoffel Symbolds:\>\"", ",", " ", 
+         RowBox[{"FontWeight", "\[Rule]", "Bold"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"TableForm", "[", 
+       RowBox[{
+        RowBox[{"Partition", "[", 
+         RowBox[{
+          RowBox[{"DeleteCases", "[", 
+           RowBox[{
+            RowBox[{"Flatten", "[", "list", "]"}], ",", "Null"}], "]"}], ",", 
+          "2"}], "]"}], ",", 
+        RowBox[{"TableSpacing", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"2", ",", "2"}], "}"}]}], ",", 
+        RowBox[{"TableHeadings", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", "}"}], ",", 
+           RowBox[{"{", "a", "}"}]}], "}"}]}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], ";"}]], "Input",
+ CellChangeTimes->{
+  3.753363555831376*^9, {3.753363592843731*^9, 3.753363594869568*^9}, {
+   3.753364194701982*^9, 3.753364240294075*^9}},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"65fb70f6-141f-4109-a703-dcded8d5f40c"],
+
+Cell[CellGroupData[{
+
+Cell["Examples:", "Subsection",
+ CellChangeTimes->{{3.75336382593983*^9, 
+  3.7533638331870937`*^9}},ExpressionUUID->"ed0c76e4-7765-44dc-b70d-\
+079f1daf93ef"],
+
+Cell[TextData[{
+ "\t",
+ StyleBox["1) Considering Metric of the Form: ", "Chapter",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  SuperscriptBox["ds", "2"]],
+  FormatType->"StandardForm",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold",ExpressionUUID->"0d2fb3f2-35a3-4217-8e27-277b993f7067"],
+ StyleBox[" =",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ Cell[BoxData[
+  RowBox[{"  ", 
+   SuperscriptBox["dx", "2"]}]],
+  FormatType->"StandardForm",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold",ExpressionUUID->"f88b8e21-a9e6-4793-bdb0-f8e58ffab5cf"],
+ StyleBox[" + ",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ Cell[BoxData[
+  SuperscriptBox["e", 
+   RowBox[{"2", "f", 
+    RowBox[{"(", "x", ")"}]}]]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"eff99820-f6dd-4df4-ab12-822a8b8d9ffe"],
+ Cell[BoxData[
+  SuperscriptBox["dy", "2"]],
+  FormatType->"StandardForm",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold",ExpressionUUID->"9df9a585-8e23-49d1-b9c8-ad316a121aed"]
+}], "Text",
+ CellChangeTimes->{{3.7533636625349903`*^9, 3.7533637944419928`*^9}, {
+   3.7533638356910267`*^9, 3.753363836210841*^9}, {3.753364350184011*^9, 
+   3.753364360850275*^9}, {3.753364551988809*^9, 3.7533645574926567`*^9}, {
+   3.753364589213757*^9, 3.753364593453567*^9}, {3.753364647313402*^9, 
+   3.753364684689784*^9}, 
+   3.753364726673749*^9},ExpressionUUID->"1bec9568-56d2-40a0-bbb9-\
+a2cc8a2d8129"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"var", "=", 
+   RowBox[{"{", 
+    RowBox[{"x", ",", "y"}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"gM", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"Exp", "[", 
+        RowBox[{"2", "*", 
+         RowBox[{"f", "[", "x", "]"}]}], "]"}]}], "}"}]}], "}"}]}], " ", 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"gM", "//", "MatrixForm"}], "\n", 
+ RowBox[{"christ", "=", 
+  RowBox[{"ChristoffelSymbols", "[", 
+   RowBox[{"gM", ",", "var"}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.753363604421095*^9, 3.753363617806878*^9}, {
+   3.7533638955212393`*^9, 3.7533639008293743`*^9}, {3.7533639556597853`*^9, 
+   3.753363958652525*^9}, 3.753363998173931*^9, {3.753364246470099*^9, 
+   3.7533643006097383`*^9}, {3.75336437617562*^9, 3.753364385896736*^9}, {
+   3.75336507042523*^9, 3.753365071232004*^9}},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"0cbed249-cf7c-4852-9b7f-d81bbfe98ec3"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Metric in Matrix Form", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.753364479963188*^9, 3.753364509698634*^9}, {
+  3.753364543598114*^9, 3.753364546195767*^9}, {3.7533647118022423`*^9, 
+  3.753364722875448*^9}},ExpressionUUID->"bfac384b-cc2c-4998-ac2f-\
+98270b414794"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"1", "0"},
+     {"0", 
+      SuperscriptBox["\[ExponentialE]", 
+       RowBox[{"2", " ", 
+        RowBox[{"f", "[", "x", "]"}]}]]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.753364450964082*^9},ExpressionUUID->"60e22a29-3c6b-477f-8f6a-\
+157c95cfcfc5"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Christoffel Symbols", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":\n\t\t", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["The nonzero Christoffel symbols are displayed below. You need not \
+follow the details of \t\t\t\tconstructing the functions that we use for that \
+purpose.  In the output the symbol \[CapitalGamma][1,2,3] \t\t\t\tstands for",
+  
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox[" ",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular",
+  FontSlant->"Italic"],
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox[
+    SuperscriptBox["\[CapitalGamma]", "1"], "23"], TraditionalForm]],
+  ExpressionUUID->"cde85b40-e78e-41f1-ae77-2899ddae5ff6"],
+ StyleBox[". Because the Christoffel symbols are symmetric under interchange \
+of the last \t\t\ttwo \tindices, only the independent components are \
+displayed.\n\t\t",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.75336474672613*^9, 3.7533647783427362`*^9}, {
+  3.753364819544175*^9, 3.7533648515698223`*^9}, {3.753368187736734*^9, 
+  3.7533681994247437`*^9}},
+ Background->RGBColor[
+  1., 1., 0.85],ExpressionUUID->"40fb6ce7-3176-4c74-a81f-d7c971880246"],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {
+      StyleBox["\[Null]",
+       ShowStringCharacters->False], 
+      TagBox[
+       StyleBox["\<\"Christoffel Symbolds:\"\>",
+        StripOnInput->False,
+        FontWeight->Bold],
+       HoldForm], 
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> False]& ]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][1, 2, 2]\"\>", 
+      RowBox[{
+       RowBox[{"-", 
+        SuperscriptBox["\[ExponentialE]", 
+         RowBox[{"2", " ", 
+          RowBox[{"f", "[", "x", "]"}]}]]}], " ", 
+       RowBox[{
+        SuperscriptBox["f", "\[Prime]",
+         MultilineFunction->None], "[", "x", "]"}]}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 2, 1]\"\>", 
+      RowBox[{
+       SuperscriptBox["f", "\[Prime]",
+        MultilineFunction->None], "[", "x", "]"}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxDividers->{
+     "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+      "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[1.4]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.8]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$, TableSpacing -> {2, 2}, TableHeadings -> {{}, {
+       Style["Christoffel Symbolds:", FontWeight -> Bold]}}]]]], "Output",
+ CellChangeTimes->{
+  3.753364450974738*^9},ExpressionUUID->"8eebe51d-4590-4a32-8d5f-\
+c864f9f0ecf7"],
+
+Cell[TextData[{
+ "\t2",
+ StyleBox[") Considering ", "Chapter",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox["Euclidean metric on ",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  SuperscriptBox["\[DoubleStruckCapitalR]", "2"]],
+  FormatType->"StandardForm",ExpressionUUID->
+  "31704d15-6c2a-48f6-b5a7-5c72e8762584"],
+ StyleBox[" ",
+  FontFamily->"Helvetica Neue",
+  FontSize->8,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox["in polar coordinates: ",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox["g = d",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  SuperscriptBox["\[Rho]", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"ea90ce71-15a8-42f7-835c-53b4c3929125"],
+ StyleBox["+ ",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  SuperscriptBox["\[Rho]", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"98193836-615c-49fc-82bf-cf4a8ef614dd"],
+ Cell[BoxData[
+  SuperscriptBox["d\[Phi]", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"850e0740-1b42-4ca9-a43c-b0a0a67100a0"]
+}], "Text",
+ CellChangeTimes->{{3.7533644358653727`*^9, 3.753364440063867*^9}, {
+  3.753364914912932*^9, 3.7533650525763607`*^9}, {3.7533650847296543`*^9, 
+  3.7533651622513113`*^9}},ExpressionUUID->"f88be413-3d4a-4f57-90a9-\
+d5507cc7964b"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"var", "=", 
+   RowBox[{"{", 
+    RowBox[{"\[Rho]", ",", "\[Phi]"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"gM", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"\[Rho]", "^", "2"}]}], "}"}]}], "}"}]}], " ", 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"gM", "//", "MatrixForm"}], "\n", 
+ RowBox[{"christ", "=", 
+  RowBox[{"ChristoffelSymbols", "[", 
+   RowBox[{"gM", ",", "var"}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.753365152701082*^9, 3.7533651840924*^9}},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"a95bc994-4068-4492-a05b-6322298ee392"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Metric in Matrix Form", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.753365212751197*^9, 
+  3.753365216045329*^9}},ExpressionUUID->"9ff1a3a0-3c17-455d-ad26-\
+c731a8835cd1"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"1", "0"},
+     {"0", 
+      SuperscriptBox["\[Rho]", "2"]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.753365187582539*^9},ExpressionUUID->"3c3d72a8-ef1d-4c81-a1a4-\
+cc6ff033d1bc"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Christoffel Symbols", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":\n", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.7533652508999968`*^9, 
+  3.7533652591875772`*^9}},ExpressionUUID->"b4205916-f870-466d-a423-\
+6ed98f0d58d8"],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {
+      StyleBox["\[Null]",
+       ShowStringCharacters->False], 
+      TagBox[
+       StyleBox["\<\"Christoffel Symbolds:\"\>",
+        StripOnInput->False,
+        FontWeight->Bold],
+       HoldForm], 
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> False]& ]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][1, 2, 2]\"\>", 
+      RowBox[{"-", "\[Rho]"}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 2, 1]\"\>", 
+      FractionBox["1", "\[Rho]"]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxDividers->{
+     "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+      "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[1.4]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.8]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$, TableSpacing -> {2, 2}, TableHeadings -> {{}, {
+       Style["Christoffel Symbolds:", FontWeight -> Bold]}}]]]], "Output",
+ CellChangeTimes->{
+  3.753365187593088*^9},ExpressionUUID->"f4aa8577-01ff-49b8-b6b0-\
+6519a42b24ce"],
+
+Cell[BoxData[""], "Text",
+ CellChangeTimes->{{3.753364441976241*^9, 
+  3.753364447208572*^9}},ExpressionUUID->"27c83bd6-559b-457d-8352-\
+f20af75b9fb3"],
+
+Cell[TextData[{
+ "\t3",
+ StyleBox[") Considering ", "Chapter",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox["unit round metric on ",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  SuperscriptBox["S", "2"]],
+  FormatType->"StandardForm",ExpressionUUID->
+  "6e8c8185-6540-46e9-be3f-80d76629a89b"],
+ StyleBox[":",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox[" h = ",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  SuperscriptBox["d\[Theta]", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"3684cb08-0cb3-43ce-8d0d-5a907efc616e"],
+ StyleBox[" ",
+  FontFamily->"Helvetica Neue",
+  FontSize->8,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox["+ ",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  SuperscriptBox["sin", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"74eaa7c7-8563-4ef4-82a0-5d377cdcfec7"],
+ StyleBox["\[Theta] d",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  SuperscriptBox["\[Phi]", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"928405bb-a9d8-45aa-9c57-301ed5599d19"],
+ StyleBox[".",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]]
+}], "Text",
+ CellChangeTimes->{{3.7533652912186747`*^9, 3.753365294076655*^9}, {
+  3.753365331095479*^9, 
+  3.753365454729677*^9}},ExpressionUUID->"42e633b5-0853-490f-a201-\
+fad6dba36bfa"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"var", "=", 
+   RowBox[{"{", 
+    RowBox[{"\[Theta]", ",", "\[Phi]"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"gM", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"1", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{
+        RowBox[{"Sin", "[", "\[Theta]", "]"}], "^", "2"}]}], "}"}]}], "}"}]}],
+   " ", ";"}], "\[IndentingNewLine]", 
+ RowBox[{"gM", "//", "MatrixForm"}], "\n", 
+ RowBox[{"christ", "=", 
+  RowBox[{"ChristoffelSymbols", "[", 
+   RowBox[{"gM", ",", "var"}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.753365496293001*^9, 3.753365535789229*^9}},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"415ed7ee-799e-4e57-a109-a6bf7fd7d1bf"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Metric in Matrix Form", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.753365578960229*^9, 
+  3.753365586280087*^9}},ExpressionUUID->"cc0d63b5-370d-4c78-891d-\
+e2c4da37998b"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {"1", "0"},
+     {"0", 
+      SuperscriptBox[
+       RowBox[{"Sin", "[", "\[Theta]", "]"}], "2"]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.753365571457985*^9},ExpressionUUID->"3c79dd9a-d9cd-4adb-8c54-\
+5ba40d4eb1e9"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Christoffel Symbols", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.753365596033801*^9, 
+  3.75336559824004*^9}},ExpressionUUID->"9883b1c0-1fad-4b01-8d88-\
+cc5d89c39344"],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {
+      StyleBox["\[Null]",
+       ShowStringCharacters->False], 
+      TagBox[
+       StyleBox["\<\"Christoffel Symbolds:\"\>",
+        StripOnInput->False,
+        FontWeight->Bold],
+       HoldForm], 
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> False]& ]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][1, 2, 2]\"\>", 
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"Cos", "[", "\[Theta]", "]"}]}], " ", 
+       RowBox[{"Sin", "[", "\[Theta]", "]"}]}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 2, 1]\"\>", 
+      RowBox[{"Cot", "[", "\[Theta]", "]"}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxDividers->{
+     "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+      "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[1.4]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.8]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$, TableSpacing -> {2, 2}, TableHeadings -> {{}, {
+       Style["Christoffel Symbolds:", FontWeight -> Bold]}}]]]], "Output",
+ CellChangeTimes->{
+  3.753365571468009*^9},ExpressionUUID->"b4eac56f-7bff-4dbc-829d-\
+89ff90458364"],
+
+Cell[TextData[{
+ "\t4",
+ StyleBox[") Considering ", "Chapter",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox["Rindler metric:",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox[" s = -",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  FractionBox["1", 
+   SuperscriptBox["r", "2"]]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"bc4da7fa-dd72-4ffc-88b5-b3ee41ba20fd"],
+ Cell[BoxData[
+  RowBox[{
+   SuperscriptBox["d\[Tau]", "2"], "+", 
+   FractionBox["1", 
+    SuperscriptBox["r", "4"]]}]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"f95d4898-8d85-4ca0-a566-6dc55cefa775"],
+ Cell[BoxData[
+  SuperscriptBox["dr", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"460ca785-659e-44f2-91e5-793dfbf3df78"],
+ StyleBox["+",
+  FontWeight->"Bold"],
+ Cell[BoxData[
+  SuperscriptBox["dy", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"839f1b6b-88be-44f4-9e77-9f4b75585c9e"],
+ StyleBox["+",
+  FontWeight->"Bold"],
+ Cell[BoxData[
+  SuperscriptBox["dz", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"1ba8f3fb-6808-4546-8156-e83bfe27d005"]
+}], "Text",
+ CellChangeTimes->{{3.753365999338002*^9, 3.7533660165219097`*^9}, {
+  3.75336604903688*^9, 
+  3.7533662016355753`*^9}},ExpressionUUID->"dc3168c0-1226-4c0f-83a9-\
+7f8f21920b04"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"var", "=", 
+   RowBox[{"{", 
+    RowBox[{"\[Tau]", ",", "r", ",", "y", ",", "z"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"gM", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", "1"}], "/", 
+        RowBox[{"r", "^", "2"}]}], ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{"1", "/", 
+        RowBox[{"r", "^", "4"}]}], ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "1", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "0", ",", "1"}], "}"}]}], "}"}]}], " ", 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"gM", "//", "MatrixForm"}], "\n", 
+ RowBox[{"christ", "=", 
+  RowBox[{"ChristoffelSymbols", "[", 
+   RowBox[{"gM", ",", "var"}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.75336597654522*^9, 3.7533659880509977`*^9}, {
+  3.7533662263342733`*^9, 3.753366327578454*^9}},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"e6b9a611-9f0e-49cc-a3d7-55635eabc18b"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Metric in Matrix Form", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.753367384965464*^9, 
+  3.753367388140751*^9}},ExpressionUUID->"d9d1f919-1806-4e7a-9f1a-\
+6bec828b805b"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {
+      RowBox[{"-", 
+       FractionBox["1", 
+        SuperscriptBox["r", "2"]]}], "0", "0", "0"},
+     {"0", 
+      FractionBox["1", 
+       SuperscriptBox["r", "4"]], "0", "0"},
+     {"0", "0", "1", "0"},
+     {"0", "0", "0", "1"}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.753366330007709*^9},ExpressionUUID->"f325aa9d-61c6-4590-8394-\
+0b97ed3004a8"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Christoffel Symbols", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.753367406745421*^9, 
+  3.75336740876764*^9}},ExpressionUUID->"de6d7a62-d3c7-4066-a5ff-\
+00e4a1a49091"],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {
+      StyleBox["\[Null]",
+       ShowStringCharacters->False], 
+      TagBox[
+       StyleBox["\<\"Christoffel Symbolds:\"\>",
+        StripOnInput->False,
+        FontWeight->Bold],
+       HoldForm], 
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> False]& ]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][1, 2, 1]\"\>", 
+      RowBox[{"-", 
+       FractionBox["1", "r"]}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 1, 1]\"\>", 
+      RowBox[{"-", "r"}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 2, 2]\"\>", 
+      RowBox[{"-", 
+       FractionBox["2", "r"]}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxDividers->{
+     "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+      "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[1.4]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.8]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$, TableSpacing -> {2, 2}, TableHeadings -> {{}, {
+       Style["Christoffel Symbolds:", FontWeight -> Bold]}}]]]], "Output",
+ CellChangeTimes->{
+  3.7533663300169153`*^9},ExpressionUUID->"abdfdebc-4fb2-4c16-a64b-\
+03444193ec75"],
+
+Cell[BoxData[""], "Input",ExpressionUUID->"ccf3e7ba-5ec5-44de-b202-15a951240a2f"],
+
+Cell[TextData[{
+ "\t5",
+ StyleBox[") Considering ", "Chapter",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox["the Anti-De Sitter Metric in Pointcare Coordinates (3+1):",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Regular",
+  FontColor->RGBColor[0., 0., 0.]],
+ StyleBox[" a = ",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  FractionBox[
+   SuperscriptBox["l", "2"], 
+   SuperscriptBox["z", "2"]]],
+  FormatType->"StandardForm",ExpressionUUID->
+  "975e4610-2923-403f-8162-a2443d42587e"],
+ StyleBox["(-",
+  FontFamily->"Helvetica Neue",
+  FontSize->15,
+  FontWeight->"Bold",
+  FontColor->RGBColor[0., 0., 0.]],
+ Cell[BoxData[
+  RowBox[{
+   SuperscriptBox["dt", "2"], "+"}]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"acfb88d6-c1f9-4bdf-b994-860782675f13"],
+ Cell[BoxData[
+  SuperscriptBox["dz", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"9e771ed9-b633-48fa-a3d5-4b1a01c8ec74"],
+ StyleBox["+",
+  FontWeight->"Bold"],
+ Cell[BoxData[
+  SuperscriptBox["dx", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"41a79be3-ce22-4b79-8adc-164fba1f6c1a"],
+ StyleBox["+",
+  FontWeight->"Bold"],
+ Cell[BoxData[
+  SuperscriptBox["dy", "2"]],
+  FormatType->"StandardForm",
+  FontWeight->"Bold",ExpressionUUID->"9cd367b1-bc10-446d-bd81-ba39e8675503"],
+ ")"
+}], "Text",
+ CellChangeTimes->{{3.753367426133659*^9, 3.753367502288929*^9}, {
+  3.753367547177161*^9, 3.753367640147002*^9}, {3.753367789025008*^9, 
+  3.753367807607918*^9}, {3.753367849151947*^9, 
+  3.753367961319058*^9}},ExpressionUUID->"69f49988-8084-4bb9-bcb4-\
+ca88277851f6"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"var", "=", 
+   RowBox[{"{", 
+    RowBox[{"t", ",", "z", ",", "x", ",", "y"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"gM", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"-", 
+         RowBox[{"l", "^", "2"}]}], "/", 
+        RowBox[{"z", "^", "2"}]}], ",", "0", ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", 
+       RowBox[{
+        RowBox[{"l", "^", "2"}], "/", 
+        RowBox[{"z", "^", "2"}]}], ",", "0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", 
+       RowBox[{
+        RowBox[{"l", "^", "2"}], "/", 
+        RowBox[{"z", "^", "2"}]}], ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0", ",", "0", ",", 
+       RowBox[{
+        RowBox[{"l", "^", "2"}], "/", 
+        RowBox[{"z", "^", "2"}]}]}], "}"}]}], "}"}]}], " ", 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"gM", "//", "MatrixForm"}], "\n", 
+ RowBox[{"christ", "=", 
+  RowBox[{"ChristoffelSymbols", "[", 
+   RowBox[{"gM", ",", "var"}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.753367957680479*^9, 3.753368056019225*^9}},
+ Background->RGBColor[
+  0.87, 0.94, 1],ExpressionUUID->"3527b0c7-7dcc-4774-8e9a-ccb4f43662d2"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Metric in Matrix Form", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.753368144233686*^9, 
+  3.753368146463642*^9}},ExpressionUUID->"ba7d8c7c-f4ab-4698-8598-\
+48eacb48e935"],
+
+Cell[BoxData[
+ TagBox[
+  RowBox[{"(", "\[NoBreak]", GridBox[{
+     {
+      RowBox[{"-", 
+       FractionBox[
+        SuperscriptBox["l", "2"], 
+        SuperscriptBox["z", "2"]]}], "0", "0", "0"},
+     {"0", 
+      FractionBox[
+       SuperscriptBox["l", "2"], 
+       SuperscriptBox["z", "2"]], "0", "0"},
+     {"0", "0", 
+      FractionBox[
+       SuperscriptBox["l", "2"], 
+       SuperscriptBox["z", "2"]], "0"},
+     {"0", "0", "0", 
+      FractionBox[
+       SuperscriptBox["l", "2"], 
+       SuperscriptBox["z", "2"]]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Center}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[0.7]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.4]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}], "\[NoBreak]", ")"}],
+  Function[BoxForm`e$, 
+   MatrixForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.753368058154694*^9},ExpressionUUID->"743685d8-a68a-45d0-a990-\
+bdf919ac18df"],
+
+Cell[TextData[{
+ StyleBox["\t\[RightArrow] ", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"],
+ StyleBox["Christoffel Symbols", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Bold"],
+ StyleBox[":", "Subitem",
+  FontFamily->"Helvetica Neue",
+  FontWeight->"Regular"]
+}], "Text",
+ CellChangeTimes->{{3.75336815427409*^9, 
+  3.753368156712191*^9}},ExpressionUUID->"9acfae2b-6823-4104-a717-\
+c61742c7acc3"],
+
+Cell[BoxData[
+ TagBox[
+  TagBox[GridBox[{
+     {
+      StyleBox["\[Null]",
+       ShowStringCharacters->False], 
+      TagBox[
+       StyleBox["\<\"Christoffel Symbolds:\"\>",
+        StripOnInput->False,
+        FontWeight->Bold],
+       HoldForm], 
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> False]& ]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][1, 2, 1]\"\>", 
+      RowBox[{"-", 
+       FractionBox["1", "z"]}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 1, 1]\"\>", 
+      RowBox[{"-", 
+       FractionBox["1", "z"]}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 2, 2]\"\>", 
+      RowBox[{"-", 
+       FractionBox["1", "z"]}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 3, 3]\"\>", 
+      FractionBox["1", "z"]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][2, 4, 4]\"\>", 
+      FractionBox["1", "z"]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][3, 3, 2]\"\>", 
+      RowBox[{"-", 
+       FractionBox["1", "z"]}]},
+     {
+      TagBox[
+       StyleBox["\<\"\[Null]\"\>",
+        ShowStringCharacters->False],
+       StyleForm[#, ShowStringCharacters -> 
+        False]& ], "\<\"\[CapitalGamma][4, 4, 2]\"\>", 
+      RowBox[{"-", 
+       FractionBox["1", "z"]}]}
+    },
+    GridBoxAlignment->{
+     "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+      "RowsIndexed" -> {}},
+    GridBoxDividers->{
+     "Columns" -> {False, True, {False}, False}, "ColumnsIndexed" -> {}, 
+      "Rows" -> {False, True, {False}, False}, "RowsIndexed" -> {}},
+    GridBoxSpacings->{"Columns" -> {
+        Offset[0.27999999999999997`], {
+         Offset[1.4]}, 
+        Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+        Offset[0.2], {
+         Offset[0.8]}, 
+        Offset[0.2]}, "RowsIndexed" -> {}}],
+   {OutputFormsDump`HeadedRows, OutputFormsDump`HeadedColumns}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$, TableSpacing -> {2, 2}, TableHeadings -> {{}, {
+       Style["Christoffel Symbolds:", FontWeight -> Bold]}}]]]], "Output",
+ CellChangeTimes->{
+  3.753368058164624*^9},ExpressionUUID->"5214389e-4d3e-4208-81e6-\
+c02947208702"],
+
+Cell[BoxData[""], "Input",ExpressionUUID->"5768bf83-0aae-43eb-8623-eeb5e2ce0df5"]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{808, 600},
+WindowMargins->{{150, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->FrontEnd`FileName[{"Utility"}, "Notepad.nb", 
+  CharacterEncoding -> "UTF-8"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 263, 5, 79, "Section",ExpressionUUID->"32b45bae-3801-443b-accf-93d0c85c02bf"],
+Cell[846, 29, 2514, 70, 273, "Text",ExpressionUUID->"023a459f-dce5-431d-a846-2eba82794cd4"],
+Cell[3363, 101, 4787, 121, 350, "Input",ExpressionUUID->"65fb70f6-141f-4109-a703-dcded8d5f40c"],
+Cell[CellGroupData[{
+Cell[8175, 226, 158, 3, 54, "Subsection",ExpressionUUID->"ed0c76e4-7765-44dc-b70d-079f1daf93ef"],
+Cell[8336, 231, 1524, 42, 35, "Text",ExpressionUUID->"1bec9568-56d2-40a0-bbb9-a2cc8a2d8129"],
+Cell[9863, 275, 1058, 27, 103, "Input",ExpressionUUID->"0cbed249-cf7c-4852-9b7f-d81bbfe98ec3"],
+Cell[10924, 304, 533, 14, 32, "Text",ExpressionUUID->"bfac384b-cc2c-4998-ac2f-98270b414794"],
+Cell[11460, 320, 791, 23, 51, "Output",ExpressionUUID->"60e22a29-3c6b-477f-8f6a-157c95cfcfc5"],
+Cell[12254, 345, 1372, 35, 192, "Text",ExpressionUUID->"40fb6ce7-3176-4c74-a81f-d7c971880246"],
+Cell[13629, 382, 2066, 58, 79, "Output",ExpressionUUID->"8eebe51d-4590-4a32-8d5f-c864f9f0ecf7"],
+Cell[15698, 442, 1696, 52, 34, "Text",ExpressionUUID->"f88be413-3d4a-4f57-90a9-d5507cc7964b"],
+Cell[17397, 496, 729, 22, 103, "Input",ExpressionUUID->"a95bc994-4068-4492-a05b-6322298ee392"],
+Cell[18129, 520, 436, 13, 32, "Text",ExpressionUUID->"9ff1a3a0-3c17-455d-ad26-c731a8835cd1"],
+Cell[18568, 535, 720, 21, 51, "Output",ExpressionUUID->"3c3d72a8-ef1d-4c81-a1a4-cc6ff033d1bc"],
+Cell[19291, 558, 440, 13, 65, "Text",ExpressionUUID->"b4205916-f870-466d-a423-6ed98f0d58d8"],
+Cell[19734, 573, 1758, 49, 87, "Output",ExpressionUUID->"f4aa8577-01ff-49b8-b6b0-6519a42b24ce"],
+Cell[21495, 624, 151, 3, 33, InheritFromParent,ExpressionUUID->"27c83bd6-559b-457d-8352-f20af75b9fb3"],
+Cell[21649, 629, 1852, 62, 34, "Text",ExpressionUUID->"42e633b5-0853-490f-a201-fad6dba36bfa"],
+Cell[23504, 693, 771, 23, 103, "Input",ExpressionUUID->"415ed7ee-799e-4e57-a109-a6bf7fd7d1bf"],
+Cell[24278, 718, 436, 13, 32, "Text",ExpressionUUID->"cc0d63b5-370d-4c78-891d-e2c4da37998b"],
+Cell[24717, 733, 757, 22, 51, "Output",ExpressionUUID->"3c79dd9a-d9cd-4adb-8c54-5ba40d4eb1e9"],
+Cell[25477, 757, 433, 13, 32, "Text",ExpressionUUID->"9883b1c0-1fad-4b01-8d88-cc5d89c39344"],
+Cell[25913, 772, 1877, 52, 77, "Output",ExpressionUUID->"b4eac56f-7bff-4dbc-829d-89ff90458364"],
+Cell[27793, 826, 1563, 49, 40, "Text",ExpressionUUID->"dc3168c0-1226-4c0f-83a9-7f8f21920b04"],
+Cell[29359, 877, 1109, 31, 103, "Input",ExpressionUUID->"e6b9a611-9f0e-49cc-a3d7-55635eabc18b"],
+Cell[30471, 910, 436, 13, 32, "Text",ExpressionUUID->"d9d1f919-1806-4e7a-9f1a-6bec828b805b"],
+Cell[30910, 925, 893, 27, 101, "Output",ExpressionUUID->"f325aa9d-61c6-4590-8394-0b97ed3004a8"],
+Cell[31806, 954, 433, 13, 32, "Text",ExpressionUUID->"de6d7a62-d3c7-4066-a5ff-00e4a1a49091"],
+Cell[32242, 969, 2021, 58, 115, "Output",ExpressionUUID->"abdfdebc-4fb2-4c16-a64b-03444193ec75"],
+Cell[34266, 1029, 81, 0, 29, "Input",ExpressionUUID->"ccf3e7ba-5ec5-44de-b202-15a951240a2f"],
+Cell[34350, 1031, 1772, 55, 43, "Text",ExpressionUUID->"69f49988-8084-4bb9-bcb4-ca88277851f6"],
+Cell[36125, 1088, 1283, 38, 103, "Input",ExpressionUUID->"3527b0c7-7dcc-4774-8e9a-ccb4f43662d2"],
+Cell[37411, 1128, 436, 13, 32, "Text",ExpressionUUID->"ba7d8c7c-f4ab-4698-8598-48eacb48e935"],
+Cell[37850, 1143, 1118, 35, 135, "Output",ExpressionUUID->"743685d8-a68a-45d0-a990-bdf919ac18df"],
+Cell[38971, 1180, 433, 13, 32, "Text",ExpressionUUID->"9acfae2b-6823-4104-a717-c61742c7acc3"],
+Cell[39407, 1195, 2991, 89, 243, "Output",ExpressionUUID->"5214389e-4d3e-4208-81e6-c02947208702"],
+Cell[42401, 1286, 81, 0, 29, "Input",ExpressionUUID->"5768bf83-0aae-43eb-8623-eeb5e2ce0df5"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
